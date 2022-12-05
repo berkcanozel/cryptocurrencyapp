@@ -13,6 +13,8 @@ public class SecurityConfig {
         http.csrf().disable().authorizeHttpRequests().
                 requestMatchers("/**").anonymous();
 
+        //security config will be added later
+
         return http.build();
     }
 }
