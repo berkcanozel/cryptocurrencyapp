@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+
+  microservices:
+    image: cryptocurrencyapp
+    container_name: cryptocurrencyapp
+    build:
+      context: ../
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+
+  mongo:
+    image: mongo
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: berk
+      MONGO_INITDB_ROOT_PASSWORD: 1234
