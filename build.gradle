@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '17'
+sourceCompatibility = '20'
 
 repositories {
 	mavenCentral()
@@ -15,16 +15,46 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.security:spring-security-web'
+	implementation 'org.springframework.security:spring-security-config'
 	implementation 'javax.persistence:javax.persistence-api:2.2'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.0'
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.keycloak:keycloak-spring-security-adapter:19.0.3'
+	implementation 'org.keycloak:keycloak-spring-boot-starter:19.0.3'
+	implementation 'org.springframework:spring-webmvc:6.0.4'
+	implementation 'org.springdoc:springdoc-openapi:2.1.0'
 	compileOnly 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.projectlombok:lombok:1.18.24'
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
+}
+
+// Define the JAR task
+task customJar(type: Jar) {
+	// Set the destination directory for the JAR file
+	destinationDirectory = file('/build/jar-deployments') // Replace with the desired location
+
+	// Set the name of the JAR file
+	archiveFileName = 'cryptocurrencyapp.jar' // Replace with the desired JAR file name
+
+	// Include any additional files or directories in the JAR if needed
+	// from('src/main/resources') {
+	//     include '**/*.properties'
+	// }
+
+	// Optionally, include any dependencies in the JAR file
+	// from configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+}
+
+// Configure the customJar task to execute when building
+build.dependsOn customJar
+
+// Define the tasks and their dependencies
+task buildJar(type: Jar) {
+	from sourceSets.main.output
+	dependsOn configurations.runtimeClasspath
 }
 
 tasks.named('test') {
